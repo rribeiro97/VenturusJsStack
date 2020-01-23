@@ -10,5 +10,5 @@ export class UserViewModel {
     readonly userName : string;
     @IsNotEmpty()
     @Length(3,10)
-    readonly password : string;
+    password : string;
 }

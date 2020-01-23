@@ -6,9 +6,12 @@ import { LoginViewModel } from 'src/domain/login.viewmodel';
 
 
 // Create a function that checks if the user exists, after that replace the function to avoid code repetition. 
+// Question : Can I create auxiliar functions in the service layer ?
+
+
+
 @Injectable()
 export class UserService {
-
     constructor(readonly userRepository: UserRepository){
 
     }
@@ -34,6 +37,17 @@ export class UserService {
         
         if(existingUser) {
             return this.userRepository.deleteUser(user);
+        } else {
+            throw new BadRequestException('This user doesnt exists in our database');
+        }
+        
+    }
+    updateUserPassword(user: LoginViewModel) {
+        const userList = this.userRepository.getUsers();
+        const existingUser = userList.find(a => a.userLogin === user.userLogin);
+        
+        if(existingUser) {
+            return this.userRepository.updateUser(user);
         } else {
             throw new BadRequestException('This user doesnt exists in our database');
         }
