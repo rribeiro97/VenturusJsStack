@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
 import { UserService } from 'src/services/user/user.service';
 import { UserViewModel } from 'src/domain/user.viewmodel';
+import { LoginViewModel } from 'src/domain/login.viewmodel';
 
 @Controller('user')
 export class UserController {
@@ -19,5 +20,9 @@ export class UserController {
     @Post()
     criarUsuarios(@Body() newUser: UserViewModel){
         return this.userService.createNewUser(newUser);
+    }
+    @Delete()
+    deletarUsuarios(@Body() user:LoginViewModel ) {
+        return this.userService.deleteUser(user);
     }
 }   

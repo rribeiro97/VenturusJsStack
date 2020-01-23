@@ -4,8 +4,11 @@ import { UserViewModel } from 'src/domain/user.viewmodel';
 import { logicalExpression } from '@babel/types';
 import { LoginViewModel } from 'src/domain/login.viewmodel';
 
+
+// Create a function that checks if the user exists, after that replace the function to avoid code repetition. 
 @Injectable()
 export class UserService {
+
     constructor(readonly userRepository: UserRepository){
 
     }
@@ -25,6 +28,18 @@ export class UserService {
         return this.userRepository.createUser(newUser);
 
     }
+    deleteUser(user: LoginViewModel) {
+        const userList = this.userRepository.getUsers();
+        const existingUser = userList.find(a => a.userLogin === user.userLogin);
+        
+        if(existingUser) {
+            return this.userRepository.deleteUser(user);
+        } else {
+            throw new BadRequestException('This user doesnt exists in our database');
+        }
+        
+    }
+
     attemptLogin(login:LoginViewModel) {
         const userList = this.userRepository.getUsers();
         const foundLogin = userList
