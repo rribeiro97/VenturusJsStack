@@ -11,7 +11,7 @@ export class AuthController {
 
     @Post('login')
     login(@Body() login: LoginViewModel){
-        return 'Teste';
+        return this.authService.login(login);
     }
 
 }

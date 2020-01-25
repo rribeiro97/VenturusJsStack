@@ -4,24 +4,20 @@ import { UserViewModel } from 'src/domain/user.viewmodel';
 import { logicalExpression } from '@babel/types';
 import { LoginViewModel } from 'src/domain/login.viewmodel';
 
-
-// Create a function that checks if the user exists, after that replace the function to avoid code repetition. 
+// Create a function that checks if the user exists, after that replace the function to avoid code repetition.
 // Question : Can I create auxiliar functions in the service layer ?
-
-
 
 @Injectable()
 export class UserService {
-    constructor(readonly userRepository: UserRepository){
+    constructor(readonly userRepository: UserRepository) {
 
     }
-    getUsers(){
+    getUsers() {
         return this.userRepository.getUsers();
     }
-    
 
-    createNewUser(newUser: UserViewModel){
-        const userList = this.userRepository.getUsers();
+    async createNewUser(newUser: UserViewModel) {
+        const userList = await this.userRepository.getUsers();
         const existingUser = userList.find(a => a.userName === newUser.userName);
 
         if (existingUser) {
@@ -32,34 +28,30 @@ export class UserService {
 
     }
     deleteUser(user: LoginViewModel) {
-        const userList = this.userRepository.getUsers();
-        const existingUser = userList.find(a => a.userLogin === user.userLogin);
-        
-        if(existingUser) {
-            return this.userRepository.deleteUser(user);
-        } else {
-            throw new BadRequestException('This user doesnt exists in our database');
-        }
-        
+        // const userList = this.userRepository.getUsers();
+        // const existingUser = userList.find(a => a.userLogin === user.userLogin);
+        // if(existingUser) {
+        //     return this.userRepository.deleteUser(user);
+        // } else {
+        //     throw new BadRequestException('This user doesnt exists in our database');
+        // }
     }
     updateUserPassword(user: LoginViewModel) {
-        const userList = this.userRepository.getUsers();
-        const existingUser = userList.find(a => a.userLogin === user.userLogin);
-        
-        if(existingUser) {
-            return this.userRepository.updateUser(user);
-        } else {
-            throw new BadRequestException('This user doesnt exists in our database');
-        }
-        
+        // const userList = await this.userRepository.getUsers();
+        // const existingUser = userList.find(a => a.userLogin === user.userLogin);
+        // if(existingUser) {
+        //     return this.userRepository.updateUser(user);
+        // } else {
+        //     throw new BadRequestException('This user doesnt exists in our database');
+        // }
     }
 
-    attemptLogin(login:LoginViewModel) {
-        const userList = this.userRepository.getUsers();
+    async attemptLogin(login: LoginViewModel) {
+        const userList = await this.userRepository.getUsers();
         const foundLogin = userList
-        .find( a => 
+        .find( a =>
             a.userLogin === login.userLogin &&
             a.password === login.password );
-            return foundLogin;
+        return foundLogin;
         }
 }
